@@ -1,16 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users');
+const MongoClient = require('mongodb').MongoClient;
+const app = express();
 
-var app = express();
-
-// view engine mail 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
-//e
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -33,10 +31,16 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-   console.log(  "avi" ,process.env)
   // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
 
+MongoClient.connect("mongodb://localhost:27017/test",{ useNewUrlParser: true }, async (err, db)=>{
+  if(!err) {
+    console.log("We are connected");
+  }else{
+    console.log("data")
+  }
+});
 module.exports = app;
