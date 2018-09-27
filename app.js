@@ -15,7 +15,6 @@ const getDb = require("./dbconnection/db").getDb;
 
 
 mongoose.Promise = global.Promise;
-mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://127.0.0.1/test');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -34,7 +33,13 @@ app.use('/users', usersRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
+// mongoose.connect('mongodb://127.0.0.1/test');
+// mongoose.connection.on('error', () => {
+//   throw new Error(`unable to connect to database:`);
+// });
+// mongoose.connection.on('connected', () => {
+//   console.log(`Connected to database:`);
+// });
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -44,4 +49,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 module.exports = app;

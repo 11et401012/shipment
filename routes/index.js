@@ -3,6 +3,22 @@ const router = express.Router();
 const User = require('../model/users');
 const userController = require('../controller/userController');
 /* GET home page. */
+function verifytoken(req, res, next) {
+  jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function (err, decoded) {
+    if (err) {
+      res.json({
+        status: "error",
+        message: err.message,
+        data: null
+      });
+    } else {
+      // add user id to request
+      req.body.userId = decoded.id;
+      next();
+    }
+  });
+
+}
 router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Express'
@@ -10,7 +26,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/user', userController.registerUser)
-
+  .delete('/user/:id', verifytoken, userController.userdelete)
 const sendEmail = require('../services/sendgrid.service')
 router.get('/email', async (req, res, next) => {
   let email = {
@@ -18,9 +34,9 @@ router.get('/email', async (req, res, next) => {
     from: 'avinash@eventizy.in'
   }
   const sent = await sendEmail.sendEmail(email)
-  console.log("sendEmail", sent)
   res.json({
     success: true,
+    sent: sent,
     sendEmail: sendEmail
   })
 })
