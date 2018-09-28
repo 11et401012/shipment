@@ -1,6 +1,8 @@
 'use strict'
 const express = require('express');
 const User = require('../model/users');
+const Post = require('../model/post');
+
 const jwt = require('jsonwebtoken');
 const initDb = require("../dbconnection/db").initDb;
 const getDb = require("../dbconnection/db").getDb;
@@ -12,21 +14,15 @@ module.exports.registerUser = async (request, response, next) => {
     user.email = request.body.email;
     user.name = request.body.name;
     const s = await user.save();
-    const token = jwt.sign({
-        user: s
-    }, request.app.get('secretKey'), {
-        expiresIn: '1h'
-    });
     if (s) {
         return response.status(200).send({
             success: true,
             user: s,
-            token: token,
+            //token: token,
             message: 'successfully register'
         })
     }
 }
-
 module.exports.userdelete = (async (req, res, next) => {
     const user = await User.findOne({
         username: req.params.id
@@ -38,4 +34,35 @@ module.exports.userdelete = (async (req, res, next) => {
             user: user
         })
     }
+})
+
+//5bae680f596d7d1b94b38256
+
+module.exports.post = (async (req, res, next) => {
+    const post = new Post();
+    post.comment = req.body.comment;
+    // post.user_id = req.body.user_id;
+    //await post.save();
+    const user = await User.findById(req.body.user_id)
+    post.user_id = user;
+    await post.save();
+    user.post.push(post);
+    await user.save();
+    if (post) {
+        return res.status(200).send({
+            success: true,
+            post: post
+        })
+    }
+})
+module.exports.getUerDetails = (async (req, res, next) => {
+    console.log("req", req.params.id)
+    const user = await User.findById(req.params.id)
+        .populate('post')
+
+    return res.status(200).send({
+        success: true,
+        user: user
+    })
+
 })

@@ -1,4 +1,5 @@
 'use strict'
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const SALT_WORK_FACTOR = 10;
@@ -19,7 +20,11 @@ const UserSchema = mongoose.Schema({
     email: {
         type: String,
         required: true
-    }
+    },
+    post: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'post'
+    }]
 })
 UserSchema.plugin(mongoose_delete, {
     deletedAt: true

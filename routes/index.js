@@ -27,6 +27,9 @@ router.get('/', function (req, res, next) {
 
 router.post('/user', userController.registerUser)
   .delete('/user/:id', verifytoken, userController.userdelete)
+  .post('/user/post', userController.post)
+  .get('/user/:id', userController.getUerDetails)
+
 const sendEmail = require('../services/sendgrid.service')
 router.get('/email', async (req, res, next) => {
   let email = {
