@@ -56,10 +56,13 @@ module.exports.post = (async (req, res, next) => {
     }
 })
 module.exports.getUerDetails = (async (req, res, next) => {
-    console.log("req", req.params.id)
-    const user = await User.findById(req.params.id)
-        .populate('post')
+   // console.log(req.params)
+   let {id,page}=req.query;
+   console.log("req", id)
 
+    let perpage=1;
+    const user = await User.findById(id)
+        .populate('post')
     return res.status(200).send({
         success: true,
         user: user
