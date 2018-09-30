@@ -33,8 +33,8 @@ app.use('/users', usersRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });
-// mongoose.connect('mongodb://127.0.0.1/test');
-// mongoose.connection.on('error', () => {
+// mongoose.connect('mongodb://127.0.0.1/test'); 
+// mongoose.connection.on('error', () => {sss
 //   throw new Error(`unable to connect to database:`);
 // });
 // mongoose.connection.on('connected', () => {
