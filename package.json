@@ -9,10 +9,13 @@
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
     "bcryptjs": "^2.4.3",
-    "cookie-parser": "~1.4.3",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "debug": "~2.6.9",
     "dotenv": "^6.0.0",
-    "express": "~4.16.0",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.3.0",
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.3.0",
     "mongodb": "^3.1.6",
@@ -20,6 +23,7 @@
     "mongoose-delete": "^0.4.0",
     "morgan": "~1.9.0",
     "nodemon": "^1.18.4",
+    "pdfmake": "^0.1.38",
     "pug": "2.0.0-beta11",
     "sendgrid": "^5.2.3"
   }

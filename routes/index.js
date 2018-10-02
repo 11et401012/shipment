@@ -1,24 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../model/users');
+const authentication=require('../services/auth.service');
 const userController = require('../controller/userController');
 /* GET home page. */
-function verifytoken(req, res, next) {
-  jwt.verify(req.headers['x-access-token'], req.app.get('secretKey'), function (err, decoded) {
-    if (err) {
-      res.json({
-        status: "error",
-        message: err.message,
-        data: null
-      });
-    } else {
-      // add user id to request
-      req.body.userId = decoded.id;
-      next();
-    }
-  });
-
-}
 router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Express'
@@ -26,9 +11,10 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/user', userController.registerUser)
-  .delete('/user/:id', verifytoken, userController.userdelete)
-  .post('/user/post', userController.post)
-  .get('/user', userController.getUerDetails)
+  .delete('/user', authentication.auth, userController.userdelete)
+  .post('/user/post', authentication.auth, userController.post)
+  .post('/user/login',userController.userlogin)
+  .get('/user', authentication.auth, userController.getUerDetails)
 
 const sendEmail = require('../services/sendgrid.service')
 router.get('/email', async (req, res, next) => {
