@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/users');
 const authentication=require('../services/auth.service');
+const userMiddleware=require('../middleware/register.middleware');
 const userController = require('../controller/userController');
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -13,7 +14,7 @@ router.get('/', function (req, res, next) {
 router.post('/user', userController.registerUser)
   .delete('/user', authentication.auth, userController.userdelete)
   .post('/user/post', authentication.auth, userController.post)
-  .post('/user/login',userController.userlogin)
+  .post('/user/login',userMiddleware.validateLogin, userController.userlogin)
   .get('/user', authentication.auth, userController.getUerDetails)
 
 const sendEmail = require('../services/sendgrid.service')
