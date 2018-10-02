@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.post('/user', userController.registerUser)
+router.post('/user', userMiddleware.ValidateReg, userController.registerUser)
   .delete('/user', authentication.auth, userController.userdelete)
   .post('/user/post', authentication.auth, userController.post)
   .post('/user/login',userMiddleware.validateLogin, userController.userlogin)

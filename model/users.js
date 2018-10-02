@@ -19,7 +19,7 @@ const UserSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true 
     },
     post: [{
         type: mongoose.Schema.Types.ObjectId,
