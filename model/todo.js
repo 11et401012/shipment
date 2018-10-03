@@ -10,7 +10,7 @@ const TodoSchema = mongoose.Schema({
     status:{type:Number,default:1},
     user_id: {
         type: mongoose.Schema.ObjectId,
-        ref: 'tasks'
+        ref: 'users'
     }
 })
 TodoSchema.plugin(mongoose_delete, {

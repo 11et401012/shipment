@@ -24,3 +24,11 @@ module.exports.fetchtask=async(req,res)=>{
         task:task
     })
 }
+
+
+module.exports.storeTodo=async (req,res)=>{
+    const user=req.authData.user;
+    const todo=new Todo();
+    todo.name=req.body.name;
+    
+}
