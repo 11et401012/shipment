@@ -25,7 +25,7 @@ module.exports.userlogin=(async(req,res,next)=>{
     const reqs=req.body;
    const user=await  User.findOne({username:req.body.username});
    if(user){
-      const isMatch=await bcrypt.compare(reqs.password,user.password);
+      const isMatch=await user.comparePassword(reqs.password) 
      if(isMatch){
       const JwtAuth=await jwt.sign({user:user},'secretkey');
          return res.status(200).send({
@@ -33,16 +33,18 @@ module.exports.userlogin=(async(req,res,next)=>{
              jwt:JwtAuth
 
          })
-     }
+        }
      return res.status(200).send({
          success:false,
          message:'password not found'
      })
-   }
+}
    return res.status(200).send({
        success:false,
-       message:'username not found'
+       message:'username not found',
+       user:user
    })
+
 })
 module.exports.userdelete = (async (req, res, next) => {
     const user = await User.findOne({
