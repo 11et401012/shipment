@@ -1,38 +1,29 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../model/users');
-const authentication=require('../services/auth.service');
-const userMiddleware=require('../middleware/register.middleware');
-const userController = require('../controller/userController');
-const TasktodoController=require('../controller/TaskTodoController');
+const containerController = require('../controller/containerController');
+const containerStatusController = require('../controller/containerStatusController');
+const shipmentController = require('../controller/shimentController');
+const shipmentMiddleware = require('../middleware/shipment.middleware');
+const containerService = require('../services/util.service');
+const containerStatusMiddleware = require('../middleware/containerstatus.middleware');
+const containerMiddleware = require('../middleware/container.middleware');
+const containerupdateStatusMiddleware = require('../middleware/containerUpdate.middleware');
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Express'
-
   });
 });
 
-router.post('/user', userMiddleware.ValidateReg, userController.registerUser)
-  .delete('/user', authentication.auth, userController.userdelete)
-  .post('/user/post', authentication.auth, userController.post)
-  .post('/user/login',userMiddleware.validateLogin, userController.userlogin)
-  .get('/user', authentication.auth, userController.getUerDetails)
-  .post('/user/task',authentication.auth,TasktodoController.storeTask)
-  .get('/user/task',authentication.auth,TasktodoController.fetchtask);
-  
+router.get('/container/status', containerStatusController.fetchContainerStatus)
+  .post('/container/status', containerStatusMiddleware.ValidateContainerStatus, containerStatusController.saveContainerStatus);
 
-const sendEmail = require('../services/sendgrid.service')
-router.get('/email', async (req, res, next) => {
-  let email = {
-    to: 'avinashpateljnu@gmail.com',
-    from: 'avinash@eventizy.in'
-  }
-  const sent = await sendEmail.sendEmail(email)
-  res.json({
-    success: true,
-    sent: sent,
-    sendEmail: sendEmail
-  })
-})
+router.post('/container', containerMiddleware.ValidateContainer, containerController.storeContainer)
+  .put('/container', containerupdateStatusMiddleware.ValidateContainerUpdateStatus, containerController.updateContainerStatus)
+  .get('/container', containerController.fetchContainer);
+
+
+router.post('/shipment', shipmentMiddleware.Validateshipment, containerService.findContainer, shipmentController.storeShipment)
+  .delete('/shipment', shipmentController.deleteShipment);
+
 module.exports = router;

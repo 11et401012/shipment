@@ -7,7 +7,7 @@ function initDb(callback) {
         console.warn("Trying to init DB again!");
         return callback(null, _db);
     }
-    client.connect("mongodb://localhost:27017/test", connected);
+    client.connect("mongodb://localhost:27017/shipment", connected);
 
     function connected(err, db) {
         if (err) {

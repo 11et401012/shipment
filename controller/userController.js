@@ -1,6 +1,6 @@
 'use strict'
 const User = require('../model/users');
-const Post = require('../model/post');
+// const Post = require('../model/post');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -11,7 +11,13 @@ module.exports.registerUser = async (request, response, next) => {
     user.password = request.body.password;
     user.email = request.body.email;
     user.name = request.body.name;
-    const s = await user.save();
+    try {
+        const s = await user.save();
+
+    } catch (error) {
+        console.log("av", error);
+
+    }
     if (s) {
         return response.status(200).send({
             success: true,
@@ -21,29 +27,33 @@ module.exports.registerUser = async (request, response, next) => {
     }
 }
 
-module.exports.userlogin=(async(req,res,next)=>{
-    const reqs=req.body;
-   const user=await  User.findOne({username:req.body.username});
-   if(user){
-      const isMatch=await user.comparePassword(reqs.password) 
-     if(isMatch){
-      const JwtAuth=await jwt.sign({user:user},'secretkey');
-         return res.status(200).send({
-             success:true,
-             jwt:JwtAuth
+module.exports.userlogin = (async (req, res, next) => {
+    const reqs = req.body;
+    const user = await User.findOne({
+        username: req.body.username
+    });
+    if (user) {
+        const isMatch = await user.comparePassword(reqs.password)
+        if (isMatch) {
+            const JwtAuth = await jwt.sign({
+                user: user
+            }, 'secretkey');
+            return res.status(200).send({
+                success: true,
+                jwt: JwtAuth
 
-         })
+            })
         }
-     return res.status(200).send({
-         success:false,
-         message:'password not found'
-     })
-}
-   return res.status(200).send({
-       success:false,
-       message:'username not found',
-       user:user
-   })
+        return res.status(200).send({
+            success: false,
+            message: 'password not found'
+        })
+    }
+    return res.status(200).send({
+        success: false,
+        message: 'username not found',
+        user: user
+    })
 
 })
 module.exports.userdelete = (async (req, res, next) => {
@@ -78,13 +88,16 @@ module.exports.post = (async (req, res, next) => {
 })
 
 module.exports.getUerDetails = (async (req, res, next) => {
-   let {id,page}=req.query;
-    let perpage=1;
+    let {
+        id,
+        page
+    } = req.query;
+    let perpage = 1;
     const user = await User.findById(id)
         .populate('post')
     return res.status(200).send({
         success: true,
-          user: user
+        user: user
     })
 
 })
