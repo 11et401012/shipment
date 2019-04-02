@@ -6,7 +6,7 @@ const {
 } = require('express-validator/check');
 
 module.exports.ValidateContainerUpdateStatus = async (req, res, next) => {
-    req.check('StatusId', "container Status is required").trim().notEmpty()
+    req.check('status', "container Status is required").trim().notEmpty()
     try {
         let error = req.validationErrors();
         console.log(error)

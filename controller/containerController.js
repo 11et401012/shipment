@@ -70,8 +70,11 @@ module.exports.updateContainerStatus = async (req, res, next) => {
     const container = await Container.findOne({
         _id: query.containerId
     });
+    let containerstatus = await containerStatus.findOne({
+        containerStatus: req.body.status
+    });
     if (container) {
-        container.containerStatus = ObjectId(req.body.StatusId);
+        container.containerStatus = ObjectId(containerstatus._id);
         await container.save();
         let containerhistory = await containerHistory.findOne({
             containerId: ObjectId(query.containerId)
