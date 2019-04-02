@@ -81,3 +81,12 @@ module.exports.deleteShipment = async (req, res, next) => {
 
     // const shipment = new Shipment();
 }
+module.exports.fetchShipment = async (req, res, next) => {
+    const shipment = await Shipment.find({})
+        .populate('Container');
+
+    return res.status(200).send({
+        success: true,
+        shipment: shipment
+    })
+}

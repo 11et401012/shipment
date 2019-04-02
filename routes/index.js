@@ -24,6 +24,7 @@ router.post('/container', containerMiddleware.ValidateContainer, containerContro
 
 
 router.post('/shipment', shipmentMiddleware.Validateshipment, containerService.findContainer, shipmentController.storeShipment)
-  .delete('/shipment', shipmentController.deleteShipment);
+  .delete('/shipment', shipmentController.deleteShipment)
+  .get('/shipment', shipmentController.fetchShipment);
 
 module.exports = router;

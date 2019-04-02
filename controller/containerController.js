@@ -52,7 +52,12 @@ module.exports.storeContainer = async (req, res, next) => {
                 containerStatus: containerstatus
             })
         }
-    } catch (error) {}
+    } catch (error) {
+        return res.status(400).send({
+            success: false,
+            eror: error
+        })
+    }
     return res.status(200).send({
         success: true,
         containerStatus: containerstatus
@@ -86,16 +91,19 @@ module.exports.updateContainerStatus = async (req, res, next) => {
 }
 
 module.exports.fetchContainer = async (req, res, next) => {
-    const container = await Container.findOne({}).
-    populate({
-            path: 'containerStatus',
+    try {
+        const container = await Container.find({}).
+        populate({
+                path: 'containerStatus',
 
+            })
+            .populate('shipment');
+        return res.status(200).send({
+            success: true,
+            container: container
         })
-        .populate('shipment');
+    } catch (error) {
 
+    }
 
-    return res.status(200).send({
-        success: true,
-        container: container
-    })
 }
