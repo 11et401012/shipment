@@ -23,7 +23,7 @@
     "mongoose-delete": "^0.4.0",
     "morgan": "~1.9.0",
     "pdfmake": "^0.1.38",
-    "pug": "2.0.0-beta11",
+    "pug": "3.0.1",
     "sendgrid": "^5.2.3"
   },
   "devDependencies": {
